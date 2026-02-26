@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Лонгрид</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background-color: #F5F2ED;
+      color: #2a2a2a;
+      line-height: 1.6;
+    }
+
+    .longread {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .frame {
+      width: 100%;
+      min-height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
+      position: relative;
+    }
+
+    .frame-content {
+      max-width: 75%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .frame img,
+    .frame video {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .frame video {
+      background: #000;
+    }
+
+    /* Обрезка полосок (рамки) на первой анимации */
+    .frame:first-of-type .frame-content {
+      overflow: hidden;
+      border-radius: 2px;
+    }
+
+    .frame:first-of-type video {
+      transform: scale(1.08);
+      object-fit: cover;
+    }
+
+    /* Обрезка черной полоски на последней анимации */
+    .frame:last-of-type .frame-content {
+      overflow: hidden;
+    }
+
+    .frame:last-of-type video {
+      transform: scale(1.01);
+      object-fit: cover;
+    }
+
+    /* Плавное появление при скролле */
+    .frame {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .frame.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .frame {
+        min-height: 40vh;
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="longread">
+    <!-- Frame 0 - Видео -->
+    <section class="frame" data-frame="0">
+      <div class="frame-content">
+        <video autoplay muted playsinline loop>
+          <source src="логотип.mp4" type="video/mp4">
+        </video>
+      </div>
+    </section>
+
+    <!-- Frame 1 -->
+    <section class="frame" data-frame="1">
+      <div class="frame-content">
+        <img src="Frame 1.png" alt="Frame 1">
+      </div>
+    </section>
+
+    <!-- Frame 2 -->
+    <section class="frame" data-frame="2">
+      <div class="frame-content">
+        <img src="Frame 2.png" alt="Frame 2">
+      </div>
+    </section>
+
+    <!-- Frame 3 -->
+    <section class="frame" data-frame="3">
+      <div class="frame-content">
+        <img src="Frame 3.png" alt="Frame 3">
+      </div>
+    </section>
+
+    <!-- Frame 4 -->
+    <section class="frame" data-frame="4">
+      <div class="frame-content">
+        <img src="Frame 4.png" alt="Frame 4">
+      </div>
+    </section>
+
+    <!-- Frame 5 -->
+    <section class="frame" data-frame="5">
+      <div class="frame-content">
+        <img src="Frame 5.png" alt="Frame 5">
+      </div>
+    </section>
+
+    <!-- Frame 6 -->
+    <section class="frame" data-frame="6">
+      <div class="frame-content">
+        <img src="Frame 6.png" alt="Frame 6">
+      </div>
+    </section>
+
+    <!-- Frame 7 - Видео -->
+    <section class="frame" data-frame="7">
+      <div class="frame-content">
+        <video autoplay muted playsinline loop>
+          <source src="6565.mp4" type="video/mp4">
+        </video>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Анимация появления при скролле
+    const frames = document.querySelectorAll('.frame');
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.2
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    frames.forEach(frame => observer.observe(frame));
+
+    // Видео — зацикливание (дополнительная гарантия)
+    document.querySelectorAll('video').forEach(video => {
+      video.addEventListener('ended', () => video.play());
+    });
+  </script>
+</body>
+</html>
